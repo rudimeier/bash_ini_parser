@@ -218,8 +218,7 @@ function read_ini()
 
 			# We'll enclose the value in double quotes now, so we must escape any
 			# double quotes that may be in the value first
-			VAL=$(echo "$VAL" | awk '{sub(/"/,"\\\"",$0); print $0;}')
-			VAL="\"$VAL\""
+			VAL="\"${VAL//\"/\\\"}\""
 		fi
 
 		# Replace $ and ` to prevent code running inside eval
