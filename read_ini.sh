@@ -170,10 +170,6 @@ function read_ini()
 		fi
 
 		# Surround VAL with quotes if it isn't already
-		local FIRSTCHAR=${VAL:0:1}
-		local LASTCHAR=${VAL:(-1):1}
-		local DOUBLEQUOTES=""
-		local SINGLEQUOTES=""
 
 		if [[ "${VAL}" =~ ^\".*\"$  ]]
 		then
