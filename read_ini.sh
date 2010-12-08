@@ -79,7 +79,7 @@ function read_ini()
 	fi
 
 	# Be strict with the prefix, since it's going to be run through eval
-	local PREFIX_BANNED_CHARS=$(echo "$VARNAME_PREFIX" | sed 's/[a-z0-9_]//ig')
+	local PREFIX_BANNED_CHARS="${VARNAME_PREFIX//[a-zA-Z0-9_]/}"
 
 	if [ -n "$PREFIX_BANNED_CHARS" ]
 	then
