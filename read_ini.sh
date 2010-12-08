@@ -175,18 +175,14 @@ function read_ini()
 		local DOUBLEQUOTES=""
 		local SINGLEQUOTES=""
 
-		if [ "$FIRSTCHAR" = '"' -a "$LASTCHAR" = '"' ]
+		if [[ "${VAL}" =~ ^\".*\"$  ]]
 		then
-			DOUBLEQUOTES=1
-		fi
-
-		if [ "$FIRSTCHAR" = "'" -a "$LASTCHAR" = "'" ]
+			VAL="${VAL//\"/}"
+			VAL="\$'${VAL//\'/\'}'"
+		elif [[ "${VAL}" =~ ^\'.*\'$  ]]
 		then
-			SINGLEQUOTES=1
-		fi
-
-		if [ -z "$SINGLEQUOTES" -a -z "$DOUBLEQUOTES" ]
-		then
+			VAL="\$${VAL}"
+		else
 			# Value is not enclosed in quotes
 
 			# If we have booleans processing switched on, check for special boolean
@@ -218,13 +214,9 @@ function read_ini()
 
 			# We'll enclose the value in double quotes now, so we must escape any
 			# double quotes that may be in the value first
-			VAL="\"${VAL//\"/\\\"}\""
+			VAL="\$'${VAL//\'/\'}'"
 		fi
 
-		# Replace $ and ` to prevent code running inside eval
-		VAL=${VAL//\`/\\\`}
-		VAL=${VAL//\$/\\\$}
-#declare -x $VARNAME="$VAL"
 		eval "$VARNAME=$VAL"
 	done < <(cat $INI_FILE)
 }
