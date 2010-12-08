@@ -143,18 +143,18 @@ function read_ini()
 			fi
 		fi
 
+
+		local VAR="$(expr match "${line}" '^ *\([a-zA-Z0-9._-]\{1,\}\)[[:space:]]*=')"
+		local VAL="$(expr match "${line}" '^[^=]*=[[:space:]]*\(.*\)')"
+		VAR=$(echo $VAR)
+
 		# Valid var/value line? (check for variable name and then '=')
-		if [ $(expr match "${line}" '^[[:space:]]*[a-zA-Z0-9._-]\{1,\}[[:space:]]*=') -le 0 ]
+		if [ -z ${VAR} ]
 		then
 			echo "Error: Invalid line:" >&2
 			echo " ${LINE_NUM}: $line" >&2
 			return 1
 		fi
-
-		local VAR="$(expr match "${line}" '^ *\([a-zA-Z0-9._-]\{1,\}\)[[:space:]]*=')"
-		local VAL="$(expr match "${line}" '^[^=]*=[[:space:]]*\(.*\)')"
-		VAR=$(echo $VAR)
-#echo VAL = $VAL
 
 
 		# Construct variable name:
