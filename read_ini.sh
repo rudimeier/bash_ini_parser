@@ -173,11 +173,14 @@ function read_ini()
 
 		if [[ "${VAL}" =~ ^\".*\"$  ]]
 		then
-			VAL="${VAL//\"/}"
+			VAL="${VAL##\"}"
+			VAL="${VAL%%\"}"
 			VAL="\$'${VAL//\'/\'}'"
 		elif [[ "${VAL}" =~ ^\'.*\'$  ]]
 		then
-			VAL="\$${VAL}"
+			VAL="${VAL##\'}"
+			VAL="${VAL%%\'}"
+			VAL="\$'${VAL//\'/\'}'"
 		else
 			# Value is not enclosed in quotes
 
