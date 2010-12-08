@@ -1,0 +1,5 @@
+var_1:VAR 1
+var_two:VAR 2
+var_3_two_dots:VAR 3
+section 1 var_1:section 1 VAR 1
+section 1 var_two:section 1 VAR 2

@@ -1,0 +1,2 @@
+var1:blah blah `ls` blah
+var2:blah blah $(ls) blah

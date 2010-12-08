@@ -1,0 +1,7 @@
+
+
+- Tabs/newlines to be preserved
+
+- [] notation for arrays (like PHP's parse_ini_file())
+
+
