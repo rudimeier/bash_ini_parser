@@ -144,18 +144,15 @@ function read_ini()
 		fi
 
 		# Valid var/value line? (check for variable name and then '=')
-		local VAR_VAL=$(echo "$line" | awk 'BEGIN { FS="=" } /^[a-zA-Z0-9._-]+[[:space:]]*=/ { print $1,"__INI__PARSER__DELIMITER__",$2; }')
-#echo "VAR_VAL = *$VAR_VAL*"
-
-		if [ -z "$VAR_VAL" ]
+		if [ $(expr match "${line}" '^[[:space:]]*[a-zA-Z0-9._-]\{1,\}[[:space:]]*=') -le 0 ]
 		then
 			echo "Error: Invalid line:" >&2
 			echo " ${LINE_NUM}: $line" >&2
 			return 1
 		fi
 
-		local VAR=$(echo "$VAR_VAL" | awk -F__INI__PARSER__DELIMITER__ '{print $1}')
-		local VAL=$(echo "$VAR_VAL" | awk -F__INI__PARSER__DELIMITER__ '{sub(/^[[:space:]]+/,"",$2); print $2;}')
+		local VAR="$(expr match "${line}" '^ *\([a-zA-Z0-9._-]\{1,\}\)[[:space:]]*=')"
+		local VAL="$(expr match "${line}" '^[^=]*=[[:space:]]*\(.*\)')"
 		VAR=$(echo $VAR)
 #echo VAL = $VAL
 
