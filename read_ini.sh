@@ -124,8 +124,7 @@ function read_ini()
 		fi
 
 		# Section marker?
-		local line_rev=$(echo "$line" | rev)
-		if [ "${line:0:1}" = "[" ] && [ "${line_rev:0:1}" = "]" ]
+		if [[ "${line}" =~ ^\[.*\]$ ]]
 		then
 
 			# Set SECTION var to name of section (strip [ and ] from section marker)
