@@ -110,9 +110,12 @@ function read_ini()
 
 	local LINE_NUM=0
 	local SECTION=""
+	local IFS=$' \t\n'
+	local IFS_OLD="${IFS}"
+	shopt -q -s extglob
+	
 	while read line
 	do
-
 #echo line = "$line"
 
 		((LINE_NUM++))
@@ -143,16 +146,21 @@ function read_ini()
 			fi
 		fi
 
-
-		local VAR="$(expr match "${line}" '^ *\([a-zA-Z0-9._-]\{1,\}\)[[:space:]]*=')"
-		local VAL="$(expr match "${line}" '^[^=]*=[[:space:]]*\(.*\)')"
+		IFS="="
+		read -r VAR VAL <<< "${line}"
+		IFS="${IFS_OLD}"
+		
+		# delete spaces around the equal sign (using extglob)
+		VAR="${VAR%%+([[:space:]])}"
+		VAL="${VAL##+([[:space:]])}"
 		VAR=$(echo $VAR)
 
 		# Valid var/value line? (check for variable name and then '=')
-		if [ -z ${VAR} ]
+		if ! [[ "${VAR}" =~ ^[a-zA-Z0-9._-]{1,}$ ]]
 		then
 			echo "Error: Invalid line:" >&2
 			echo " ${LINE_NUM}: $line" >&2
+			shopt -q -u extglob
 			return 1
 		fi
 
@@ -218,6 +226,8 @@ function read_ini()
 
 		eval "$VARNAME=$VAL"
 	done < <(cat $INI_FILE)
+	
+	shopt -q -u extglob
 }
 
 
