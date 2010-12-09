@@ -114,7 +114,7 @@ function read_ini()
 	local IFS_OLD="${IFS}"
 	shopt -q -s extglob
 	
-	while read line
+	while read -r line
 	do
 #echo line = "$line"
 
@@ -221,6 +221,7 @@ function read_ini()
 
 		# enclose the value in single quotes and escape any
 		# single quotes that may be in the value
+		VAL="${VAL//\\/\\\\}"
 		VAL="\$'${VAL//\'/\'}'"
 
 		eval "$VARNAME=$VAL"
