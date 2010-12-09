@@ -177,18 +177,16 @@ function read_ini()
 			VARNAME=${VARNAME_PREFIX}__${SECTION}__${VAR//./_}
 		fi
 
-		# Surround VAL with quotes if it isn't already
-
 		if [[ "${VAL}" =~ ^\".*\"$  ]]
 		then
+			# remove existing double quotes
 			VAL="${VAL##\"}"
 			VAL="${VAL%%\"}"
-			VAL="\$'${VAL//\'/\'}'"
 		elif [[ "${VAL}" =~ ^\'.*\'$  ]]
 		then
+			# remove existing single quotes
 			VAL="${VAL##\'}"
 			VAL="${VAL%%\'}"
-			VAL="\$'${VAL//\'/\'}'"
 		else
 			# Value is not enclosed in quotes
 
@@ -218,11 +216,12 @@ function read_ini()
 				fi
 
 			fi
-
-			# We'll enclose the value in double quotes now, so we must escape any
-			# double quotes that may be in the value first
-			VAL="\$'${VAL//\'/\'}'"
 		fi
+		
+
+		# enclose the value in single quotes and escape any
+		# single quotes that may be in the value
+		VAL="\$'${VAL//\'/\'}'"
 
 		eval "$VARNAME=$VAL"
 	done  <${INI_FILE}
