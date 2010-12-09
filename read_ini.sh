@@ -127,7 +127,7 @@ function read_ini()
 		fi
 
 		# Section marker?
-		if [[ "${line}" =~ ^\[.*\]$ ]]
+		if [[ "${line}" =~ ^\[[a-zA-Z0-9_]{1,}\]$ ]]
 		then
 
 			# Set SECTION var to name of section (strip [ and ] from section marker)
@@ -156,7 +156,7 @@ function read_ini()
 		VAR=$(echo $VAR)
 
 		# Valid var/value line? (check for variable name and then '=')
-		if ! [[ "${VAR}" =~ ^[a-zA-Z0-9._-]{1,}$ ]]
+		if ! [[ "${VAR}" =~ ^[a-zA-Z0-9._]{1,}$ ]]
 		then
 			echo "Error: Invalid line:" >&2
 			echo " ${LINE_NUM}: $line" >&2
