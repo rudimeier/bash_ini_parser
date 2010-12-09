@@ -225,7 +225,7 @@ function read_ini()
 		fi
 
 		eval "$VARNAME=$VAL"
-	done < <(cat $INI_FILE)
+	done  <${INI_FILE}
 	
 	shopt -q -u extglob
 }
