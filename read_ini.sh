@@ -211,24 +211,22 @@ function read_ini()
 			# remove existing single quotes
 			VAL="${VAL##\'}"
 			VAL="${VAL%%\'}"
-		else
+		elif [ "$BOOLEANS" = 1 ]
+		then
 			# Value is not enclosed in quotes
-
-			# If we have booleans processing switched on, check for special boolean
+			# Booleans processing is switched on, check for special boolean
 			# values and convert
-			if [ "$BOOLEANS" == 1 ]
-			then
-				# here we compare case insensitive because
-				# "shopt nocasematch"
-				case "$VAL" in
-					yes | true | on )
-						VAL=1
-					;;
-					no | false | off )
-						VAL=0
-					;;
-				esac
-			fi
+
+			# here we compare case insensitive because
+			# "shopt nocasematch"
+			case "$VAL" in
+				yes | true | on )
+					VAL=1
+				;;
+				no | false | off )
+					VAL=0
+				;;
+			esac
 		fi
 		
 
