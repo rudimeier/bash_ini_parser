@@ -79,7 +79,7 @@ function read_ini()
 	fi
 
 	# Be strict with the prefix, since it's going to be run through eval
-	local PREFIX_BANNED_CHARS=$(echo "$VARNAME_PREFIX" | sed 's/[a-z0-9_]//ig')
+	local PREFIX_BANNED_CHARS="${VARNAME_PREFIX//[a-zA-Z0-9_]/}"
 
 	if [ -n "$PREFIX_BANNED_CHARS" ]
 	then
@@ -110,9 +110,12 @@ function read_ini()
 
 	local LINE_NUM=0
 	local SECTION=""
-	while read line
+	local IFS=$' \t\n'
+	local IFS_OLD="${IFS}"
+	shopt -q -s extglob
+	
+	while read -r line
 	do
-
 #echo line = "$line"
 
 		((LINE_NUM++))
@@ -124,8 +127,7 @@ function read_ini()
 		fi
 
 		# Section marker?
-		local line_rev=$(echo "$line" | rev)
-		if [ "${line:0:1}" = "[" ] && [ "${line_rev:0:1}" = "]" ]
+		if [[ "${line}" =~ ^\[[a-zA-Z0-9_]{1,}\]$ ]]
 		then
 
 			# Set SECTION var to name of section (strip [ and ] from section marker)
@@ -144,21 +146,23 @@ function read_ini()
 			fi
 		fi
 
-		# Valid var/value line? (check for variable name and then '=')
-		local VAR_VAL=$(echo "$line" | awk 'BEGIN { FS="=" } /^[a-zA-Z0-9._-]+[[:space:]]*=/ { print $1,"__INI__PARSER__DELIMITER__",$2; }')
-#echo "VAR_VAL = *$VAR_VAL*"
+		IFS="="
+		read -r VAR VAL <<< "${line}"
+		IFS="${IFS_OLD}"
+		
+		# delete spaces around the equal sign (using extglob)
+		VAR="${VAR%%+([[:space:]])}"
+		VAL="${VAL##+([[:space:]])}"
+		VAR=$(echo $VAR)
 
-		if [ -z "$VAR_VAL" ]
+		# Valid var/value line? (check for variable name and then '=')
+		if ! [[ "${VAR}" =~ ^[a-zA-Z0-9._]{1,}$ ]]
 		then
 			echo "Error: Invalid line:" >&2
 			echo " ${LINE_NUM}: $line" >&2
+			shopt -q -u extglob
 			return 1
 		fi
-
-		local VAR=$(echo "$VAR_VAL" | awk -F__INI__PARSER__DELIMITER__ '{print $1}')
-		local VAL=$(echo "$VAR_VAL" | awk -F__INI__PARSER__DELIMITER__ '{sub(/^[[:space:]]+/,"",$2); print $2;}')
-		VAR=$(echo $VAR)
-#echo VAL = $VAL
 
 
 		# Construct variable name:
@@ -173,24 +177,17 @@ function read_ini()
 			VARNAME=${VARNAME_PREFIX}__${SECTION}__${VAR//./_}
 		fi
 
-		# Surround VAL with quotes if it isn't already
-		local FIRSTCHAR=${VAL:0:1}
-		local LASTCHAR=${VAL:$LEN-1:1}
-		local DOUBLEQUOTES=""
-		local SINGLEQUOTES=""
-
-		if [ "$FIRSTCHAR" = '"' -a "$LASTCHAR" = '"' ]
+		if [[ "${VAL}" =~ ^\".*\"$  ]]
 		then
-			DOUBLEQUOTES=1
-		fi
-
-		if [ "$FIRSTCHAR" = "'" -a "$LASTCHAR" = "'" ]
+			# remove existing double quotes
+			VAL="${VAL##\"}"
+			VAL="${VAL%%\"}"
+		elif [[ "${VAL}" =~ ^\'.*\'$  ]]
 		then
-			SINGLEQUOTES=1
-		fi
-
-		if [ -z "$SINGLEQUOTES" -a -z "$DOUBLEQUOTES" ]
-		then
+			# remove existing single quotes
+			VAL="${VAL##\'}"
+			VAL="${VAL%%\'}"
+		else
 			# Value is not enclosed in quotes
 
 			# If we have booleans processing switched on, check for special boolean
@@ -219,19 +216,18 @@ function read_ini()
 				fi
 
 			fi
-
-			# We'll enclose the value in double quotes now, so we must escape any
-			# double quotes that may be in the value first
-			VAL=$(echo "$VAL" | awk '{sub(/"/,"\\\"",$0); print $0;}')
-			VAL="\"$VAL\""
 		fi
+		
 
-		# Replace $ and ` to prevent code running inside eval
-		VAL=${VAL//\`/\\\`}
-		VAL=${VAL//\$/\\\$}
-#declare -x $VARNAME="$VAL"
+		# enclose the value in single quotes and escape any
+		# single quotes that may be in the value
+		VAL="${VAL//\\/\\\\}"
+		VAL="\$'${VAL//\'/\'}'"
+
 		eval "$VARNAME=$VAL"
-	done < <(cat $INI_FILE)
+	done  <${INI_FILE}
+	
+	shopt -q -u extglob
 }
 
 
