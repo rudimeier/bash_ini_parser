@@ -112,7 +112,7 @@ function read_ini()
 	local SECTION=""
 	local IFS=$' \t\n'
 	local IFS_OLD="${IFS}"
-	shopt -q -s extglob
+	shopt -q -s extglob nocasematch
 	
 	while read -r line
 	do
@@ -160,7 +160,7 @@ function read_ini()
 		then
 			echo "Error: Invalid line:" >&2
 			echo " ${LINE_NUM}: $line" >&2
-			shopt -q -u extglob
+			shopt -q -u extglob nocasematch
 			return 1
 		fi
 
@@ -194,27 +194,16 @@ function read_ini()
 			# values and convert
 			if [ "$BOOLEANS" == 1 ]
 			then
-
-				# Check length of string first. Since we're going to use tr command to convert
-				# the string to lowercase, it'll be more efficient if we check string length
-				# first. If value is more than 5 chars then it can't possibly be one of the
-				# special boolean values
-				if [ "${#VAL}" -le 5 ]
-				then
-
-					# Convert to lower case
-					local VAL_LOWER=$(echo "$VAL" | tr '[:upper:]' '[:lower:]')
-
-					case "$VAL_LOWER" in
-						yes | true | on )
-							VAL=1
-						;;
-						no | false | off )
-							VAL=0
-						;;
-					esac
-				fi
-
+				# here we compare case insensitive because
+				# "shopt nocasematch"
+				case "$VAL" in
+					yes | true | on )
+						VAL=1
+					;;
+					no | false | off )
+						VAL=0
+					;;
+				esac
 			fi
 		fi
 		
@@ -227,7 +216,7 @@ function read_ini()
 		eval "$VARNAME=$VAL"
 	done  <${INI_FILE}
 	
-	shopt -q -u extglob
+	shopt -q -u extglob nocasematch
 }
 
 
