@@ -88,9 +88,9 @@ function read_ini()
 		return 1
 	fi
 
-	if [ ! -f "$INI_FILE" ]
+	if [ ! -r "$INI_FILE" ]
 	then
-		echo "Error: ini file '${INI_FILE}' doesn't exist" >&2
+		echo "Error: ini file '${INI_FILE}' doesn't exist or not readable" >&2
 		return 1
 	fi
 
@@ -236,7 +236,7 @@ function read_ini()
 		VAL="\$'${VAL//\'/\'}'"
 
 		eval "$VARNAME=$VAL"
-	done  <${INI_FILE}
+	done  <"${INI_FILE}"
 	
 	cleanup_bash
 }
