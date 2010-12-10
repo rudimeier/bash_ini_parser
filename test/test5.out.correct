@@ -1,2 +1,6 @@
 var1:blah blah `ls` blah
 var2:blah blah $(ls) blah
+var3:blah blah \\`ls\\` blah
+var4:blah blah \\$(ls) blah
+var5:blah blah \`ls\` blah
+var6:blah blah \$(ls) blah
