@@ -168,6 +168,17 @@ function read_ini()
 			fi
 		fi
 
+		# Valid var/value line? (check for variable name and then '=')
+		if ! [[ "${line}" =~ ^[a-zA-Z0-9._]{1,}[[:space:]]*= ]]
+		then
+			echo "Error: Invalid line:" >&2
+			echo " ${LINE_NUM}: $line" >&2
+			cleanup_bash
+			return 1
+		fi
+
+
+		# split line at "=" sign
 		IFS="="
 		read -r VAR VAL <<< "${line}"
 		IFS="${IFS_OLD}"
@@ -176,15 +187,6 @@ function read_ini()
 		VAR="${VAR%%+([[:space:]])}"
 		VAL="${VAL##+([[:space:]])}"
 		VAR=$(echo $VAR)
-
-		# Valid var/value line? (check for variable name and then '=')
-		if ! [[ "${VAR}" =~ ^[a-zA-Z0-9._]{1,}$ ]]
-		then
-			echo "Error: Invalid line:" >&2
-			echo " ${LINE_NUM}: $line" >&2
-			cleanup_bash
-			return 1
-		fi
 
 
 		# Construct variable name:
