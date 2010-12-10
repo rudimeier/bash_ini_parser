@@ -8,6 +8,22 @@
 #
 #
 
+function pollute_bash()
+{
+	if ! shopt -q extglob ;then
+		SWITCH_SHOPT="${SWITCH_SHOPT} extglob"
+	fi
+	if ! shopt -q nocasematch ;then
+		SWITCH_SHOPT="${SWITCH_SHOPT} nocasematch"
+	fi
+	shopt -s ${SWITCH_SHOPT}
+}
+
+function cleanup_bash()
+{
+	shopt -q -u ${SWITCH_SHOPT}
+}
+
 
 function read_ini()
 {
@@ -110,9 +126,15 @@ function read_ini()
 
 	local LINE_NUM=0
 	local SECTION=""
+	
+	# IFS is used in "read" and we want to switch it within the loop
 	local IFS=$' \t\n'
 	local IFS_OLD="${IFS}"
-	shopt -q -s extglob nocasematch
+	
+	# we need some optional shell behavior (shopt) but want to restore
+	# current settings before returning
+	local SWITCH_SHOPT=""
+	pollute_bash
 	
 	while read -r line
 	do
@@ -160,7 +182,7 @@ function read_ini()
 		then
 			echo "Error: Invalid line:" >&2
 			echo " ${LINE_NUM}: $line" >&2
-			shopt -q -u extglob nocasematch
+			cleanup_bash
 			return 1
 		fi
 
@@ -216,7 +238,7 @@ function read_ini()
 		eval "$VARNAME=$VAL"
 	done  <${INI_FILE}
 	
-	shopt -q -u extglob nocasematch
+	cleanup_bash
 }
 
 
