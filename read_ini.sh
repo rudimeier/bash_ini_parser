@@ -220,7 +220,7 @@ function read_ini()
 		
 
 		# enclose the value in single quotes and escape any
-		# single quotes that may be in the value
+		# single quotes and backslashes that may be in the value
 		VAL="${VAL//\\/\\\\}"
 		VAL="\$'${VAL//\'/\'}'"
 
