@@ -59,6 +59,7 @@ function read_ini()
 	# Set defaults
 	local BOOLEANS=1
 	local VARNAME_PREFIX=INI
+	local CLEAN_ENV=0
 
 	# {{{ START Options
 
@@ -77,6 +78,10 @@ function read_ini()
 	do
 
 		case $1 in
+
+			--clean | -c )
+				CLEAN_ENV=1
+			;;
 
 			--booleans | -b )
 				shift
@@ -105,19 +110,28 @@ function read_ini()
 		shift
 	done
 
-	if [ -z "$INI_FILE" ]
-	then
-		echo "Usage: read_ini FILE [SECTION]" >&2
+	if [ -z "$INI_FILE" ] && [ "${CLEAN_ENV}" = 0 ] ;then
+		echo -e "Usage: read_ini [-c] [-b 0| -b 1]] [-p PREFIX] FILE"\
+			"[SECTION]\n  or   read_ini -c [-p PREFIX]" >&2
 		cleanup_bash
 		return 1
 	fi
 
-	if ! check_ini_file ;then
+	if ! check_prefix ;then
 		cleanup_bash
 		return 1
 	fi
+
+	if [ "${CLEAN_ENV}" = 1 ] ;then
+		echo clean_env
+	fi
+
+	if [ -z "$INI_FILE" ] ;then
+		cleanup_bash
+		return 0
+	fi
 	
-	if ! check_prefix ;then
+	if ! check_ini_file ;then
 		cleanup_bash
 		return 1
 	fi
