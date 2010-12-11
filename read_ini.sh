@@ -13,6 +13,28 @@
 
 function read_ini()
 {
+	# Be strict with the prefix, since it's going to be run through eval
+	function check_prefix()
+	{
+		local PREFIX_BANNED_CHARS="${VARNAME_PREFIX//[a-zA-Z0-9_]/}"
+
+		if [ -n "$PREFIX_BANNED_CHARS" ]
+		then
+			echo "Invalid characters ('${PREFIX_BANNED_CHARS}') in variable name prefix ('${VARNAME_PREFIX}')" >&2
+			return 1
+		fi
+
+		# Prefix can't start with a number
+		local FIRSTCHAR=${VARNAME_PREFIX:0:1}
+		local BEGINS_WITH_NUMBER=""
+		case $FIRSTCHAR in
+			0|1|2|3|4|5|6|7|8|9)
+				echo "Invalid variable name prefix - must not begin with a number" >&2
+				return 1
+			;;
+		esac
+	}
+	
 	# enable some optional shell behavior (shopt)
 	function pollute_bash()
 	{
@@ -30,7 +52,7 @@ function read_ini()
 	function cleanup_bash()
 	{
 		shopt -q -u ${SWITCH_SHOPT}
-		unset -f pollute_bash cleanup_bash
+		unset -f check_prefix pollute_bash cleanup_bash
 	}
 	
 	local INI_FILE=""
@@ -101,26 +123,10 @@ function read_ini()
 		return 1
 	fi
 
-	# Be strict with the prefix, since it's going to be run through eval
-	local PREFIX_BANNED_CHARS="${VARNAME_PREFIX//[a-zA-Z0-9_]/}"
-
-	if [ -n "$PREFIX_BANNED_CHARS" ]
-	then
-		echo "Invalid characters ('${PREFIX_BANNED_CHARS}') in variable name prefix ('${VARNAME_PREFIX}')" >&2
+	if ! check_prefix ;then
 		cleanup_bash
 		return 1
 	fi
-
-	# Prefix can't start with a number
-	local FIRSTCHAR=${VARNAME_PREFIX:0:1}
-	local BEGINS_WITH_NUMBER=""
-	case $FIRSTCHAR in
-		0|1|2|3|4|5|6|7|8|9)
-			echo "Invalid variable name prefix - must not begin with a number" >&2
-			cleanup_bash
-			return 1
-		;;
-	esac
 
 	# Sanitise BOOLEANS - interpret "0" as 0, anything else as 1
 	if [ "$BOOLEANS" != "0" ]
