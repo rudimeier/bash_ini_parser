@@ -8,26 +8,31 @@
 #
 #
 
-function pollute_bash()
-{
-	if ! shopt -q extglob ;then
-		SWITCH_SHOPT="${SWITCH_SHOPT} extglob"
-	fi
-	if ! shopt -q nocasematch ;then
-		SWITCH_SHOPT="${SWITCH_SHOPT} nocasematch"
-	fi
-	shopt -s ${SWITCH_SHOPT}
-}
 
-function cleanup_bash()
-{
-	shopt -q -u ${SWITCH_SHOPT}
-}
 
 
 function read_ini()
 {
-
+	# enable some optional shell behavior (shopt)
+	function pollute_bash()
+	{
+		if ! shopt -q extglob ;then
+			SWITCH_SHOPT="${SWITCH_SHOPT} extglob"
+		fi
+		if ! shopt -q nocasematch ;then
+			SWITCH_SHOPT="${SWITCH_SHOPT} nocasematch"
+		fi
+		shopt -s ${SWITCH_SHOPT}
+	}
+	
+	# unset all local functions and restore shopt settings before returning
+	# from read_ini()
+	function cleanup_bash()
+	{
+		shopt -q -u ${SWITCH_SHOPT}
+		unset -f pollute_bash cleanup_bash
+	}
+	
 	local INI_FILE=""
 	local INI_SECTION=""
 
@@ -85,12 +90,14 @@ function read_ini()
 	if [ -z "$INI_FILE" ]
 	then
 		echo "Usage: read_ini FILE [SECTION]" >&2
+		cleanup_bash
 		return 1
 	fi
 
 	if [ ! -r "$INI_FILE" ]
 	then
 		echo "Error: ini file '${INI_FILE}' doesn't exist or not readable" >&2
+		cleanup_bash
 		return 1
 	fi
 
@@ -100,6 +107,7 @@ function read_ini()
 	if [ -n "$PREFIX_BANNED_CHARS" ]
 	then
 		echo "Invalid characters ('${PREFIX_BANNED_CHARS}') in variable name prefix ('${VARNAME_PREFIX}')" >&2
+		cleanup_bash
 		return 1
 	fi
 
@@ -109,6 +117,7 @@ function read_ini()
 	case $FIRSTCHAR in
 		0|1|2|3|4|5|6|7|8|9)
 			echo "Invalid variable name prefix - must not begin with a number" >&2
+			cleanup_bash
 			return 1
 		;;
 	esac
