@@ -22,6 +22,15 @@ function read_ini()
 		fi
 	}
 	
+	function check_ini_file()
+	{
+		if [ ! -r "$INI_FILE" ] ;then
+			echo "read_ini: '${INI_FILE}' doesn't exist or not" \
+				"readable" >&2
+			return 1
+		fi
+	}
+	
 	# enable some optional shell behavior (shopt)
 	function pollute_bash()
 	{
@@ -39,7 +48,7 @@ function read_ini()
 	function cleanup_bash()
 	{
 		shopt -q -u ${SWITCH_SHOPT}
-		unset -f check_prefix pollute_bash cleanup_bash
+		unset -f check_prefix check_ini_file pollute_bash cleanup_bash
 	}
 	
 	local INI_FILE=""
@@ -103,13 +112,11 @@ function read_ini()
 		return 1
 	fi
 
-	if [ ! -r "$INI_FILE" ]
-	then
-		echo "Error: ini file '${INI_FILE}' doesn't exist or not readable" >&2
+	if ! check_ini_file ;then
 		cleanup_bash
 		return 1
 	fi
-
+	
 	if ! check_prefix ;then
 		cleanup_bash
 		return 1
