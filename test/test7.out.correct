@@ -2,6 +2,6 @@
 var1:VAR 1
 section1 var1:section 1 VAR 1
 # 2
-Invalid characters (':,') in variable name prefix ('PR:EFIX,')
+read_ini: invalid prefix 'PR:EFIX,'
 # 3
-Invalid variable name prefix - must not begin with a number
+read_ini: invalid prefix '1PREFIX'

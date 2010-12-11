@@ -16,23 +16,10 @@ function read_ini()
 	# Be strict with the prefix, since it's going to be run through eval
 	function check_prefix()
 	{
-		local PREFIX_BANNED_CHARS="${VARNAME_PREFIX//[a-zA-Z0-9_]/}"
-
-		if [ -n "$PREFIX_BANNED_CHARS" ]
-		then
-			echo "Invalid characters ('${PREFIX_BANNED_CHARS}') in variable name prefix ('${VARNAME_PREFIX}')" >&2
+		if ! [[ "${VARNAME_PREFIX}" =~ ^[a-zA-Z_][a-zA-Z0-9_]*$ ]] ;then
+			echo "read_ini: invalid prefix '${VARNAME_PREFIX}'" >&2
 			return 1
 		fi
-
-		# Prefix can't start with a number
-		local FIRSTCHAR=${VARNAME_PREFIX:0:1}
-		local BEGINS_WITH_NUMBER=""
-		case $FIRSTCHAR in
-			0|1|2|3|4|5|6|7|8|9)
-				echo "Invalid variable name prefix - must not begin with a number" >&2
-				return 1
-			;;
-		esac
 	}
 	
 	# enable some optional shell behavior (shopt)
