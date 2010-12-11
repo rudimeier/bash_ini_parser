@@ -122,9 +122,11 @@ function read_ini()
 		return 1
 	fi
 
+	local INI_ALL_VARNAME="${VARNAME_PREFIX}__ALL_VARS"
 	if [ "${CLEAN_ENV}" = 1 ] ;then
-		echo clean_env
+		eval unset "\$${INI_ALL_VARNAME}"
 	fi
+	unset ${INI_ALL_VARNAME}
 
 	if [ -z "$INI_FILE" ] ;then
 		cleanup_bash
@@ -223,6 +225,7 @@ function read_ini()
 		else
 			VARNAME=${VARNAME_PREFIX}__${SECTION}__${VAR//./_}
 		fi
+		eval "${INI_ALL_VARNAME}=\"\$${INI_ALL_VARNAME} ${VARNAME}\""
 
 		if [[ "${VAL}" =~ ^\".*\"$  ]]
 		then
