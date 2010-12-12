@@ -122,11 +122,14 @@ function read_ini()
 		return 1
 	fi
 
-	local INI_ALL_VARNAME="${VARNAME_PREFIX}__ALL_VARS"
 	if [ "${CLEAN_ENV}" = 1 ] ;then
-		eval unset "\$${INI_ALL_VARNAME}"
+		# TODO How to clear the whole array without unset it
+		for i in "${!INI[@]}" ;do
+			unset INI["$i"]
+		done
 	fi
-	unset ${INI_ALL_VARNAME}
+	# TODO How to declare -A ${VARNAME_PREFIX} non local? Or we have to
+	# check for a global declared one
 
 	if [ -z "$INI_FILE" ] ;then
 		cleanup_bash
@@ -221,11 +224,10 @@ function read_ini()
 		# In both cases, full stops ('.') are replaced with underscores ('_')
 		if [ -z "$SECTION" ]
 		then
-			VARNAME=${VARNAME_PREFIX}__${VAR//./_}
+			VARNAME=${VAR//./_}
 		else
-			VARNAME=${VARNAME_PREFIX}__${SECTION}__${VAR//./_}
+			VARNAME=${SECTION}__${VAR//./_}
 		fi
-		eval "${INI_ALL_VARNAME}=\"\$${INI_ALL_VARNAME} ${VARNAME}\""
 
 		if [[ "${VAL}" =~ ^\".*\"$  ]]
 		then
@@ -255,13 +257,10 @@ function read_ini()
 			esac
 		fi
 		
+#  		echo "pair: '${VARNAME}' = '${VAL}'"
+		INI[${VARNAME}]=$VAL
+#  		echo "array: '${VARNAME}' = '${INI[${VARNAME}]}'"
 
-		# enclose the value in single quotes and escape any
-		# single quotes and backslashes that may be in the value
-		VAL="${VAL//\\/\\\\}"
-		VAL="\$'${VAL//\'/\'}'"
-
-		eval "$VARNAME=$VAL"
 	done  <"${INI_FILE}"
 	
 	cleanup_bash
