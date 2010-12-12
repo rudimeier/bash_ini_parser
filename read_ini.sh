@@ -125,7 +125,7 @@ function read_ini()
 	if [ "${CLEAN_ENV}" = 1 ] ;then
 		# TODO How to clear the whole array without unset it
 		for i in "${!INI[@]}" ;do
-			unset INI["$i"]
+			unset ${VARNAME_PREFIX}['$i']
 		done
 	fi
 	# TODO How to declare -A ${VARNAME_PREFIX} non local? Or we have to
@@ -258,8 +258,8 @@ function read_ini()
 		fi
 		
 #  		echo "pair: '${VARNAME}' = '${VAL}'"
-		INI[${VARNAME}]=$VAL
-#  		echo "array: '${VARNAME}' = '${INI[${VARNAME}]}'"
+		eval ${VARNAME_PREFIX}$'[${VARNAME}]=${VAL}'
+# 		eval $'echo "array: \'${VARNAME}\' = \'${'${VARNAME_PREFIX}$'[${VARNAME}]}\'"'
 
 	done  <"${INI_FILE}"
 	
