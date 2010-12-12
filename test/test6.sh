@@ -3,53 +3,59 @@
 
 # First: with default booleans processing (on)
 . ../read_ini.sh
+
+unset INI
+declare -A INI
 read_ini test6.ini
 
-echo "yes1:$INI__yes1"
-echo "yes2:$INI__yes2"
-echo "yes3:$INI__yes3"
-echo "true1:$INI__true1"
-echo "true2:$INI__true2"
-echo "true3:$INI__true3"
-echo "on1:$INI__on1"
-echo "on2:$INI__on2"
-echo "on3:$INI__on3"
+echo "yes1:${INI[yes1]}"
+echo "yes2:${INI[yes2]}"
+echo "yes3:${INI[yes3]}"
+echo "true1:${INI[true1]}"
+echo "true2:${INI[true2]}"
+echo "true3:${INI[true3]}"
+echo "on1:${INI[on1]}"
+echo "on2:${INI[on2]}"
+echo "on3:${INI[on3]}"
 
-echo "no1:$INI__no1"
-echo "no2:$INI__no2"
-echo "no3:$INI__no3"
-echo "false1:$INI__false1"
-echo "false2:$INI__false2"
-echo "false3:$INI__false3"
-echo "off1:$INI__off1"
-echo "off2:$INI__off2"
-echo "off3:$INI__off3"
+echo "no1:${INI[no1]}"
+echo "no2:${INI[no2]}"
+echo "no3:${INI[no3]}"
+echo "false1:${INI[false1]}"
+echo "false2:${INI[false2]}"
+echo "false3:${INI[false3]}"
+echo "off1:${INI[off1]}"
+echo "off2:${INI[off2]}"
+echo "off3:${INI[off3]}"
 
 
 # Second: with booleans processing explicitly turned on via "--booleans 1"
-. ../read_ini.sh
+
+unset INI
+declare -A INI
 read_ini --booleans 1 test6.ini
 
-echo "yes1:$INI__yes1"
-echo "true2:$INI__true2"
-echo "on3:$INI__on3"
+echo "yes1:${INI[yes1]}"
+echo "true2:${INI[true2]}"
+echo "on3:${INI[on3]}"
 
-echo "no3:$INI__no3"
-echo "false2:$INI__false2"
-echo "off1:$INI__off1"
+echo "no3:${INI[no3]}"
+echo "false2:${INI[false2]}"
+echo "off1:${INI[off1]}"
 
 
 # Third: with booleans processing explicity switched off via "--booleans 0"
-. ../read_ini.sh
+unset INI
+declare -A INI
 read_ini test6.ini --booleans 0
 
-echo "yes1:$INI__yes1"
-echo "true2:$INI__true2"
-echo "on3:$INI__on3"
+echo "yes1:${INI[yes1]}"
+echo "true2:${INI[true2]}"
+echo "on3:${INI[on3]}"
 
-echo "no3:$INI__no3"
-echo "false2:$INI__false2"
-echo "off1:$INI__off1"
+echo "no3:${INI[no3]}"
+echo "false2:${INI[false2]}"
+echo "off1:${INI[off1]}"
 
 
 
