@@ -40,7 +40,7 @@ function read_ini()
 		if ! shopt -q nocasematch ;then
 			SWITCH_SHOPT="${SWITCH_SHOPT} nocasematch"
 		fi
-		shopt -s ${SWITCH_SHOPT}
+		shopt -q -s ${SWITCH_SHOPT}
 	}
 	
 	# unset all local functions and restore shopt settings before returning
