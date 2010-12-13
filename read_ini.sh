@@ -177,18 +177,13 @@ function read_ini()
 		fi
 
 		# Section marker?
-		if [[ "${line}" =~ ^\[.*\]$ ]]
+		if [[ "${line}" =~ ^\[[a-zA-Z0-9_]{1,}\]$ ]]
 		then
+
 			# Set SECTION var to name of section (strip [ and ] from section marker)
 			SECTION="${line#[}"
 			SECTION="${SECTION%]}"
-			read SECTION <<<"${SECTION}"
-			if ! [[ "${line}" =~ ^[[:print:]]+$  ]] ;then
-				echo "Error: Invalid section:" >&2
-				echo " ${LINE_NUM}: '$line'" >&2
-				cleanup_bash
-				return 1
-			fi
+
 			continue
 		fi
 
@@ -202,10 +197,10 @@ function read_ini()
 		fi
 
 		# Valid var/value line? (check for variable name and then '=')
-		if ! [[ "${line}" =~ ^[[:print:]]+[[:space:]]*= ]]
+		if ! [[ "${line}" =~ ^[a-zA-Z0-9._]{1,}[[:space:]]*= ]]
 		then
 			echo "Error: Invalid line:" >&2
-			echo " ${LINE_NUM}: '$line'" >&2
+			echo " ${LINE_NUM}: $line" >&2
 			cleanup_bash
 			return 1
 		fi

@@ -1,2 +1,2 @@
-x=blah; ls ;__var1
-x=blah; ls ;__var1:::::blah
+Error: Invalid line:
+ 3: [x=blah; ls ;]
