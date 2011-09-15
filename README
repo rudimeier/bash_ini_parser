@@ -1,13 +1,26 @@
 
+bash_ini_parser -- Simple INI file parser
+=========================================
+
+This is a comfortable and simple INI file parser to be used in
+bash scripts.
+
+
+
+
 COPYRIGHT
-=========
+---------
 
 Copyright (c) 2009 Kevin Porter / Advanced Web Construction Ltd
 (http://coding.tinternet.info / http://webutils.co.uk)
+Copyright (c) 2010, 2011 Ruediger Meier <sweet_f_a@gmx.de>
+(https://github.com/rudimeier/)
+
+
 
 
 USAGE
-=====
+-----
 
 You must source the bash file into your script:
 
@@ -58,8 +71,10 @@ echo "section1 var2 = ${INI__section1__var2}"
 -- END bash script
 
 
+
+
 OPTIONS
-=======
+-------
 
 [--prefix | -p] PREFIX
 String to prepend to generated variable names (automatically followed by '__').
@@ -71,8 +86,10 @@ Whether to interpret special unquoted string values 'yes', 'no', 'true',
 Default: 1
 
 
+
+
 INI FILE FORMAT
-===============
+---------------
 
 - Variables are stored as name/value pairs, eg:
 var=value

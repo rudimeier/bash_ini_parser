@@ -1,6 +1,8 @@
 #
-# Copyright (c) 2009	Kevin Porter / Advanced Web Construction Ltd
-#						(http://coding.tinternet.info, http://webutils.co.uk)
+# Copyright (c) 2009    Kevin Porter / Advanced Web Construction Ltd
+#                       (http://coding.tinternet.info, http://webutils.co.uk)
+# Copyright (c) 2010, 2011    Ruediger Meier <sweet_f_a@gmx.de>
+#                             (https://github.com/rudimeier/)
 #
 # Simple INI file parser.
 #
