@@ -152,6 +152,7 @@ function read_ini()
 	# }}} END Deal with command line args
 
 	local LINE_NUM=0
+	local SECTIONS_NUM=0
 	local SECTION=""
 	
 	# IFS is used in "read" and we want to switch it within the loop
@@ -182,6 +183,7 @@ function read_ini()
 			# Set SECTION var to name of section (strip [ and ] from section marker)
 			SECTION="${line#[}"
 			SECTION="${SECTION%]}"
+			((SECTIONS_NUM++))
 
 			continue
 		fi
@@ -266,6 +268,10 @@ function read_ini()
 		eval "$VARNAME=$VAL"
 	done  <"${INI_FILE}"
 	
+	# return also the number of parsed sections
+	VARNAME=${VARNAME_PREFIX}__NUMSECTIONS
+	eval "$VARNAME=$SECTIONS_NUM"
+
 	cleanup_bash
 }
 
