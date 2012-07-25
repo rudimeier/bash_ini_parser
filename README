@@ -13,7 +13,7 @@ COPYRIGHT
 
 Copyright (c) 2009 Kevin Porter / Advanced Web Construction Ltd
 (http://coding.tinternet.info / http://webutils.co.uk)
-Copyright (c) 2010, 2011 Ruediger Meier <sweet_f_a@gmx.de>
+Copyright (c) 2010-2012 Ruediger Meier <sweet_f_a@gmx.de>
 (https://github.com/rudimeier/)
 
 
@@ -41,6 +41,12 @@ PREFIX__SECTION__VARNAME
 
 PREFIX is 'INI' by default (but can be changed with the --prefix option),
 SECTION and VARNAME are the section name and variable name respectively.
+
+Additionally you can get a list of all these variable names:
+PREFIX__ALL_VARS
+and the number of sections:
+PREFIX__NUMSECTIONS 
+
 For example, to read and output the variables of this ini file:
 
 -- START test1.ini file
@@ -67,6 +73,9 @@ echo "var1 = ${INI__var1}"
 echo "var2 = ${INI__var2}"
 echo "section1 var1 = ${INI__section1__var1}"
 echo "section1 var2 = ${INI__section1__var2}"
+
+echo "list of all ini vars: ${INI__ALL_VARS}"
+echo "number of sections: ${INI__NUMSECTIONS}"
 
 -- END bash script
 
