@@ -125,10 +125,12 @@ function read_ini()
 	fi
 
 	local INI_ALL_VARNAME="${VARNAME_PREFIX}__ALL_VARS"
+	local INI_NUMSECTIONS_VARNAME="${VARNAME_PREFIX}__NUMSECTIONS"
 	if [ "${CLEAN_ENV}" = 1 ] ;then
 		eval unset "\$${INI_ALL_VARNAME}"
 	fi
 	unset ${INI_ALL_VARNAME}
+	unset ${INI_NUMSECTIONS_VARNAME}
 
 	if [ -z "$INI_FILE" ] ;then
 		cleanup_bash
@@ -269,8 +271,7 @@ function read_ini()
 	done  <"${INI_FILE}"
 	
 	# return also the number of parsed sections
-	VARNAME=${VARNAME_PREFIX}__NUMSECTIONS
-	eval "$VARNAME=$SECTIONS_NUM"
+	eval "$INI_NUMSECTIONS_VARNAME=$SECTIONS_NUM"
 
 	cleanup_bash
 }
