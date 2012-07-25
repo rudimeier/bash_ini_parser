@@ -22,4 +22,4 @@ echo "setion2_var5:$INI__section2__var5"
 echo "setion3_var1:$INI__section3__var1"
 echo "setion3_var2:$INI__section3__var2"
 
-
+echo "number sections:$INI__NUMSECTIONS"
