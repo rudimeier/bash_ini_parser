@@ -1,7 +1,7 @@
 #
 # Copyright (c) 2009    Kevin Porter / Advanced Web Construction Ltd
 #                       (http://coding.tinternet.info, http://webutils.co.uk)
-# Copyright (c) 2010, 2011    Ruediger Meier <sweet_f_a@gmx.de>
+# Copyright (c) 2010-2012     Ruediger Meier <sweet_f_a@gmx.de>
 #                             (https://github.com/rudimeier/)
 #
 # Simple INI file parser.
@@ -124,14 +124,17 @@ function read_ini()
 		return 1
 	fi
 
+	local INI_NUMSECTIONS_VARNAME="${VARNAME_PREFIX}__NUMSECTIONS"
 	if [ "${CLEAN_ENV}" = 1 ] ;then
 		# TODO How to clear the whole array without unset it
 		for i in "${!INI[@]}" ;do
 			unset ${VARNAME_PREFIX}['$i']
 		done
 	fi
+
 	# TODO How to declare -A ${VARNAME_PREFIX} non local? Or we have to
 	# check for a global declared one
+	unset ${INI_NUMSECTIONS_VARNAME}
 
 	if [ -z "$INI_FILE" ] ;then
 		cleanup_bash
@@ -155,6 +158,7 @@ function read_ini()
 	# }}} END Deal with command line args
 
 	local LINE_NUM=0
+	local SECTIONS_NUM=0
 	local SECTION=""
 	
 	# IFS is used in "read" and we want to switch it within the loop
@@ -191,6 +195,8 @@ function read_ini()
 				cleanup_bash
 				return 1
 			fi
+			((SECTIONS_NUM++))
+
 			continue
 		fi
 
@@ -270,6 +276,9 @@ function read_ini()
 
 	done  <"${INI_FILE}"
 	
+	# return also the number of parsed sections
+	eval "$INI_NUMSECTIONS_VARNAME=$SECTIONS_NUM"
+
 	cleanup_bash
 }
 
