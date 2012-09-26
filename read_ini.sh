@@ -207,7 +207,7 @@ function read_ini()
 		if ! [[ "${line}" =~ ^[[:print:]]+[[:space:]]*= ]]
 		then
 			echo "Error: Invalid line:" >&2
-			echo " ${LINE_NUM}: $line" >&2
+			echo " ${LINE_NUM}: '$line'" >&2
 			cleanup_bash
 			return 1
 		fi
