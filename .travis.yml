@@ -1,0 +1,18 @@
+language: c
+
+compiler:
+  - gcc
+
+before_install:
+
+script: cd test && ./test.sh
+
+## whitelist
+branches:
+  only:
+    - master
+    - next
+
+notifications:
+  email:
+    - sweet_f_a@gmx.de
