@@ -234,7 +234,7 @@ function read_ini()
 		else
 			VARNAME=${VARNAME_PREFIX}__${SECTION}__${VAR//./_}
 		fi
-		eval "${INI_ALL_VARNAME}=\"\$${INI_ALL_VARNAME} ${VARNAME}\""
+		eval "${INI_ALL_VARNAME}=\"\${${INI_ALL_VARNAME}# } ${VARNAME}\""
 
 		if [[ "${VAL}" =~ ^\".*\"$  ]]
 		then
