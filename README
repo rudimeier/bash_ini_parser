@@ -44,6 +44,8 @@ SECTION and VARNAME are the section name and variable name respectively.
 
 Additionally you can get a list of all these variable names:
 PREFIX__ALL_VARS
+and get a list of sections:
+PREFIX__ALL_SECTIONS
 and the number of sections:
 PREFIX__NUMSECTIONS 
 

@@ -125,11 +125,13 @@ function read_ini()
 	fi
 
 	local INI_ALL_VARNAME="${VARNAME_PREFIX}__ALL_VARS"
+	local INI_ALL_SECTION="${VARNAME_PREFIX}__ALL_SECTIONS"
 	local INI_NUMSECTIONS_VARNAME="${VARNAME_PREFIX}__NUMSECTIONS"
 	if [ "${CLEAN_ENV}" = 1 ] ;then
 		eval unset "\$${INI_ALL_VARNAME}"
 	fi
 	unset ${INI_ALL_VARNAME}
+	unset ${INI_ALL_SECTION}
 	unset ${INI_NUMSECTIONS_VARNAME}
 
 	if [ -z "$INI_FILE" ] ;then
@@ -185,6 +187,7 @@ function read_ini()
 			# Set SECTION var to name of section (strip [ and ] from section marker)
 			SECTION="${line#[}"
 			SECTION="${SECTION%]}"
+			eval "${INI_ALL_SECTION}=\"\${${INI_ALL_SECTION}# } $SECTION\""
 			((SECTIONS_NUM++))
 
 			continue
@@ -231,7 +234,7 @@ function read_ini()
 		else
 			VARNAME=${VARNAME_PREFIX}__${SECTION}__${VAR//./_}
 		fi
-		eval "${INI_ALL_VARNAME}=\"\$${INI_ALL_VARNAME} ${VARNAME}\""
+		eval "${INI_ALL_VARNAME}=\"\${${INI_ALL_VARNAME}# } ${VARNAME}\""
 
 		if [[ "${VAL}" =~ ^\".*\"$  ]]
 		then
