@@ -18,4 +18,4 @@ echo "var7:$INI__var7"
 echo "var8:$INI__var8"
 echo "var9:$INI__var9"
 echo "var10:$INI__var10"
-
+echo "var11:$INI__var11"
