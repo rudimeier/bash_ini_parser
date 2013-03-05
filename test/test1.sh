@@ -21,4 +21,5 @@ echo "var7:${INI[var7]}"
 echo "var8:${INI[var8]}"
 echo "var9:${INI[var9]}"
 echo "var10:${INI[var10]}"
+echo "var11:${INI[var11]}"
 

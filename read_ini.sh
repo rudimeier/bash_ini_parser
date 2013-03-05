@@ -170,7 +170,7 @@ function read_ini()
 	local SWITCH_SHOPT=""
 	pollute_bash
 	
-	while read -r line
+	while read -r line || [ -n "$line" ]
 	do
 #echo line = "$line"
 
