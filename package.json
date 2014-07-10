@@ -1,0 +1,7 @@
+{
+  "name": "read_ini",
+  "version": "0.4.1",
+  "description": "simple INI file parser",
+  "scripts": [ "read_ini.sh" ]
+}
+
