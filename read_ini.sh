@@ -1,8 +1,10 @@
 #
 # Copyright (c) 2009    Kevin Porter / Advanced Web Construction Ltd
 #                       (http://coding.tinternet.info, http://webutils.co.uk)
-# Copyright (c) 2010-2012     Ruediger Meier <sweet_f_a@gmx.de>
+# Copyright (c) 2010-2014     Ruediger Meier <sweet_f_a@gmx.de>
 #                             (https://github.com/rudimeier/)
+#
+# License: BSD-3-Clause, see LICENSE file
 #
 # Simple INI file parser.
 #
