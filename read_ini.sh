@@ -266,7 +266,9 @@ function read_ini()
 		then
 		    if [ $CUR_INDENT_LEVEL -gt $INDENT_LEVEL ]
 		    then
+		        # TODO values should be stipped and prefixed by \n
                 VAL="$VAL${line}"
+                echo "val is '$VAL'"
 		    else
 		        VAR="${BASH_REMATCH[1]}"
 			    VAL="${BASH_REMATCH[3]}"
