@@ -266,9 +266,7 @@ function read_ini()
 		then
 		    if [ $CUR_INDENT_LEVEL -gt $INDENT_LEVEL ]
 		    then
-		        # TODO values should be stipped and prefixed by \n
                 VAL="$VAL${line}"
-                echo "val is '$VAL'"
 		    else
 		        VAR="${BASH_REMATCH[1]}"
 			    VAL="${BASH_REMATCH[3]}"
@@ -276,7 +274,8 @@ function read_ini()
 		    fi
 		elif [ $CUR_INDENT_LEVEL -gt $INDENT_LEVEL ]
 		then
-            VAL="$VAL${line}"
+		    line="${line##+([[:space:]])}"
+            VAL="$VAL\\n${line}"
 		else
 	        LINE_IS_VALID=0
 		fi
@@ -339,7 +338,7 @@ function read_ini()
 				;;
 			esac
 		fi
-		
+
 #  		echo "pair: '${VARNAME}' = '${VAL}'"
 		eval ${VARNAME_PREFIX}$'[${VARNAME}]=${VAL}'
 # 		eval $'echo "array: \'${VARNAME}\' = \'${'${VARNAME_PREFIX}$'[${VARNAME}]}\'"'
