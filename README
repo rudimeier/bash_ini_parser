@@ -13,8 +13,10 @@ COPYRIGHT
 
 Copyright (c) 2009 Kevin Porter / Advanced Web Construction Ltd
 (http://coding.tinternet.info / http://webutils.co.uk)
-Copyright (c) 2010-2012 Ruediger Meier <sweet_f_a@gmx.de>
+Copyright (c) 2010-2015 Ruediger Meier <sweet_f_a@gmx.de>
 (https://github.com/rudimeier/)
+
+License: BSD-3-Clause, see LICENSE file
 
 
 
@@ -44,6 +46,8 @@ SECTION and VARNAME are the section name and variable name respectively.
 
 Additionally you can get a list of all these variable names:
 PREFIX__ALL_VARS
+and get a list of sections:
+PREFIX__ALL_SECTIONS
 and the number of sections:
 PREFIX__NUMSECTIONS 
 
@@ -94,7 +98,9 @@ Whether to interpret special unquoted string values 'yes', 'no', 'true',
 'false', 'on', 'off' as booleans.
 Default: 1
 
-
+[--allow_no_value | -nv] [0|1]
+Whether to allow keys without values in the ini file.
+Default: 0
 
 
 INI FILE FORMAT

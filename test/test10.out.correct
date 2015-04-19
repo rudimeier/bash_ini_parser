@@ -1,0 +1,16 @@
+Simple Values_key:value
+Simple Values_spaces in keys:allowed
+Simple Values_spaces in values:allowed as well
+Simple Values_spaces around the delimiter:obviously
+Simple Values_you can also use:to delimit keys from values
+All Values Are Strings_values like this:1000000
+All Values Are Strings_or this:3.14159265359
+All Values Are Strings_are they treated as numbers?:no
+All Values Are Strings_integers, floats and booleans are held as:strings
+All Values Are Strings_can use the API to get converted values directly:true
+Multiline Values_chorus:I'm a lumberjack, and I'm okay\nI sleep all night and I work all day
+Sections Can Be Indented_can_values_be_as_well:True
+Sections Can Be Indented_does_that_mean_anything_special:False
+Sections Can Be Indented_purpose:formatting for readability
+Sections Can Be Indented_multiline_values:are\nhandled just fine as\nlong as they are indented\ndeeper than the first line\nof a value
+number sections:5

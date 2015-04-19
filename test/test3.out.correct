@@ -1,13 +1,17 @@
 var1:VAR 1
 var2:VAR 2  
-setion1_var1:section 1 VAR 1
-setion1_var2:section 1 VAR 2
-setion1_var3:section 1 VAR 3   
-setion2_var1:section 2 VAR 1
-setion2_var2:    section 2 VAR 2
-setion2_var3:section 2 VAR 3
-setion2_var4:section 2 VAR 4
-setion2_var5:section 2 VAR 5
-setion3_var1:section 3 VAR 1
-setion3_var2:section 3 VAR 2
-number sections:3
+section1_var1:section 1 VAR 1
+section1_var2:section 1 VAR 2
+section1_var3:section 1 VAR 3   
+section2_var1:section 2 VAR 1
+section2_var2:    section 2 VAR 2
+section2_var3:section 2 VAR 3
+section2_var4:section 2 VAR 4
+section2_var5:section 2 VAR 5
+section3_var1:section 3 VAR 1
+section3_var2:section 3 VAR 2
+section-4_var1:section 4 VAR 1
+section-4_var2:section 4 VAR 2
+all sections:section1 section2 section3 section-4
+all variables:var1 var2 section1__var1 section1__var2 section1__var3 section2__var1 section2__var2 section2__var3 section2__var4 section2__var5 section3__var1 section3__var2 section-4__var1 section-4__var2
+number sections:4
