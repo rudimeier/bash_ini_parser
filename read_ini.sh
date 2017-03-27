@@ -12,7 +12,7 @@
 #
 #
 
-set -x
+
 
 
 function read_ini()
@@ -274,7 +274,7 @@ echo line = "$line"
 
 		eval "$VARNAME=$VAL"
 	done  <"${INI_FILE}"
-
+	
 	# return also the number of parsed sections
 	eval "$INI_NUMSECTIONS_VARNAME=$SECTIONS_NUM"
 
